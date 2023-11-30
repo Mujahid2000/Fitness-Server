@@ -149,6 +149,8 @@ async function run() {
       res.send(result);
     })
 
+    // class api code 
+
     app.get('/weeklySchedule', async(req, res) =>{
       const result = await classCollection.find().toArray();
       res.send(result);
