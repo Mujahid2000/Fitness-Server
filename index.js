@@ -43,7 +43,7 @@ async function run() {
     
 
     // Connect the client to the server	(optional starting in v4.7)
-    await client.connect();
+    
 
     const paymentHistory = [];
 
@@ -154,6 +154,12 @@ async function run() {
       res.send(result);
     })
 
+    app.post('/weeklySchedule', async(req, res) =>{
+      const user = req.body;
+      const result = await classCollection.insertOne(user);
+      res.send(result);
+    })
+
     app.patch('/trainerApply/:Id', async(req, res) =>{
       try {
         const id = req.params.Id;
@@ -188,19 +194,21 @@ async function run() {
       res.send(result);
     })
     
-    app.get('/trainerBooked/:trainerName', async(req, res) =>{
-      const trainerName = req.params.trainerName;
-      const filter = {trainerName : trainerName};
-      const result = await trainerBookingCollection.find(filter).toArray();
-      res.send(result);
-    })
+    // app.get('/trainerBooked/:trainerName', async(req, res) =>{
+    //   const trainerName = req.params.trainerName;
+    //   const filter = {trainerName : trainerName};
+    //   const result = await trainerBookingCollection.find(filter).toArray();
+    //   res.send(result);
+    // })
     
     
 
     app.get('/trainerBooked/:trainerName', async(req,res) =>{
       const trainerName = req.params.trainerName;
+      console.log(trainerName);
       const filter = { trainerName :  trainerName};
       const result = await trainerBookingCollection.find(filter).toArray();
+      res.send(result)
     })
 
     app.post("/updateVotes", async (req, res) => {
@@ -323,6 +331,8 @@ async function run() {
       res.send(result);
     })
 
+    
+
     app.get('/users/admin/:email', verifyToken, async(req, res) =>{
       const email = req.params.email;
       if(email !== req.decoded.email) {
@@ -337,6 +347,16 @@ async function run() {
       }
     })
 
+    app.patch('/users/update/:email', verifyToken, async (req, res) => {
+      const result = await usersCollection.updateOne({
+        email: req.params.email
+      }, {
+        $set: {
+          name: req.body.name
+        }
+      })
+      res.send(result);
+    })
 
 
     app.patch('/users/admin/:id', verifyToken, verifyAdmin, async(req, res) =>{
@@ -353,8 +373,8 @@ async function run() {
 
 
     // Send a ping to confirm a successful connection
-    await client.db("admin").command({ ping: 1 });
-    console.log("Pinged your deployment. You successfully connected to MongoDB!");
+    // await client.db("admin").command({ ping: 1 });
+    // console.log("Pinged your deployment. You successfully connected to MongoDB!");
   } finally {
     
     
