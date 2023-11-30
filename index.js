@@ -26,6 +26,7 @@ const client = new MongoClient(uri, {
     deprecationErrors: true,
   }
 });
+  // collection data 
 
 async function run() {
   try {
