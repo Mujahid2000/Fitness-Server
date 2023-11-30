@@ -119,6 +119,8 @@ async function run() {
         res.send(result);
     })
 
+    // trainer related api
+
     app.get('/trainer', async(req, res) =>{
       const result = await trainerCollection.find().toArray();
       res.send(result);
