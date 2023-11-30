@@ -287,7 +287,20 @@ async function run() {
     next();
   }
 
-
+  // verify Trainer check
+  app.get('/users/trainer/:email', verifyToken, async(req, res) =>{
+    const email = req.params.email;
+    if(email !== req.decoded.email) {
+      return res.status(403).send({message: 'forbidden access'})
+    }
+    const query = {email: email};
+    const user = await trainerCollection.findOne(query);
+    let trainer = false;
+    if(user){
+      trainer = user?.role === 'trainer';
+      res.send({trainer})
+    }
+  })
   
   // user operation
     app.post('/users', async(req, res) =>{
