@@ -113,40 +113,41 @@ async function run() {
         delete trainer._id
         const result = await trainerCollection.insertOne(trainer)
         const deleted = await trainerApplyCollection.deleteOne(filter);
-      
+        
         res.send(result);
-      
+        
       } catch (error) {
         res
-          .status(500)
-          .send({error: true, message: "server side error"});
+        .status(500)
+        .send({error: true, message: "server side error"});
       }       
-      })
-
+    })
+    
     app.post('/trainerBooked', async(req, res) =>{
       const user = req.body;
       const result = await trainerBookingCollection.insertOne(user);
       res.send(result);
     })
-
+    
     app.get('/trainerBooked', async(req, res) =>{
       const result = await trainerBookingCollection.find().toArray();
       res.send(result);
     })
-
+    
     app.get('/trainerBooked/:trainerName', async(req, res) =>{
       const trainerName = req.params.trainerName;
       const filter = {trainerName : trainerName};
       const result = await trainerBookingCollection.find(filter).toArray();
       res.send(result);
     })
+    
+    
 
-    // app.get('/trainerBooked', async(req, res) =>{
-    //   const slot = req.params.slot;
-    //   const filter = {slot: slot};
-    //   const result = await trainerBookingCollection.findOne(filter);
-    //   res.send(result);
-    // })
+    app.get('/trainerBooked/:trainerName', async(req,res) =>{
+      const trainerName = req.params.trainerName;
+      const filter = { trainerName : trainerName};
+      const result = await trainerBookingCollection.find(filter).toArray();
+    })
 
     app.post("/updateVotes", async (req, res) => {
       const data = req.body;
@@ -346,7 +347,6 @@ async function run() {
       const result = await usersCollection.updateOne(filter, updatedDoc);
       res.send(result);
     })
-
 
 
     // Send a ping to confirm a successful connection
