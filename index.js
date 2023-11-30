@@ -194,13 +194,6 @@ async function run() {
       res.send(result);
     })
     
-    // app.get('/trainerBooked/:trainerName', async(req, res) =>{
-    //   const trainerName = req.params.trainerName;
-    //   const filter = {trainerName : trainerName};
-    //   const result = await trainerBookingCollection.find(filter).toArray();
-    //   res.send(result);
-    // })
-    
     
 
     app.get('/trainerBooked/:trainerName', async(req,res) =>{
