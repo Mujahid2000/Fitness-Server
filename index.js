@@ -160,6 +160,8 @@ async function run() {
       res.send(result);
     })
 
+    // trainer api code 
+
     app.patch('/trainerApply/:Id', async(req, res) =>{
       try {
         const id = req.params.Id;
